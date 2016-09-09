@@ -1,0 +1,6 @@
+# This playbook installs Python SDK
+---
+- hosts: all
+  become: yes
+  roles:
+    - python_sdk

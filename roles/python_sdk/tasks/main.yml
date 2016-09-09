@@ -1,0 +1,45 @@
+---
+#Couchbase python sdk tasks
+- name: install EPEL repo
+  yum_repository:
+    name: epel
+    description: EPEL YUM repo
+    baseurl: http://download.fedoraproject.org/pub/epel/$releasever/$basearch/
+  when: ansible_os_family == 'RedHat'
+
+- name: download Couchbase RPMs
+  get_url:
+    url: http://packages.couchbase.com/releases/couchbase-release/couchbase-release-1.0-2-x86_64.rpm
+    dest: /root/
+  when: ansible_os_family == 'RedHat'
+
+- name: Install Couchbase RPMs
+  yum: name=couchbase-release-1.0-2-x86_64.rpm state=present
+  when: ansible_os_family == 'RedHat'
+
+- name: Download pre-required packages for CentOS
+  yum: name={{item}} state=present
+  with_items:
+   - libcouchbase-devel
+   - gcc
+   - gcc-c++
+   - python-devel
+   - python-pip
+  when: ansible_os_family == 'RedHat'
+
+- name: Install Couchbase package on Ubuntu
+  apt: deb=http://packages.couchbase.com/releases/couchbase-release/couchbase-release-1.0-2-amd64.deb
+  when: ansible_os_family == 'Debian'
+
+- name: Download pre-required items for Ubuntu and Debian
+  apt: update_cache=yes
+  apt: name={{item}} state=present
+  with_items:
+   - libcouchbase-dev
+   - build-essential
+   - python-dev
+   - python-pip
+  when: ansible_os_family == 'Debian'
+
+- name: Install Couchbase SDK
+  pip: name=couchbase
