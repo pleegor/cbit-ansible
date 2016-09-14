@@ -1,0 +1,28 @@
+---
+- name: Stop firewall service on CentOS 7 and up
+  service: name=firewalld enabled=no state=stopped
+  when: ansible_distribution == 'CentOS' and "{{ ansible_distribution_version.split('.')[0] }}" == '7'
+
+#- name: Stop Network Manager
+#  service: name=NetworkManager enabled=no state=stopped
+#  when: <IP is not static>
+
+#- name: Stop firewall service on CentOS 6
+#  service: name=iptables enabled=no state=stopped
+#  when: ansible_distribution == 'CentOS' and "{{ ansible_distribution_version.split('.')[0] }}" == '6'
+
+- name: Stop firewall service on CentOS 6
+  service: name=iptables enabled=no state=stopped
+  when: ansible_distribution == 'CentOS'
+
+#- name: Stop firewall service on CentOS 5
+#  service: name=iptables enabled=no state=stopped
+#  when: ansible_distribution == 'CentOS' and "{{ ansible_distribution_version.split('.')[0] }}" == '5'
+
+- name: Install nrpe client, git, and xinted on target on CentOS
+  yum: name={{item}} state=present
+  with_items:
+  - git
+  - nrpe
+  - xinetd
+  when: ansible_distribution == 'CentOS'

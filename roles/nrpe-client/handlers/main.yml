@@ -1,0 +1,4 @@
+---
+# handlers file for nrpe-client
+- name: restart_xinetd
+  service: name=xinetd state=restarted

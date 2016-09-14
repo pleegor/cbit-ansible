@@ -1,0 +1,16 @@
+---
+- name: Update apt cache on Ubuntu hosts
+  apt: update_cache=yes cache_valid_time=7200
+  when: ansible_distribution == 'Ubuntu'
+
+- name: Install nrpe client, git, and xinetd on Ubuntu
+  apt: name={{item}} state=present
+  with_items:
+  - git
+  - nagios-nrpe-server
+  - xinetd
+  when: ansible_distribution == 'Ubuntu'
+
+- name: setup directories for Ubuntu based hosts
+  file: path=/usr/lib64/nagios/plugins state=directory
+  when: ansible_distribution == 'Ubuntu'

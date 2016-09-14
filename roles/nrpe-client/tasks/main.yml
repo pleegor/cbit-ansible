@@ -1,0 +1,28 @@
+---
+# tasks file for nrpe-client
+- include: setup_CentOS.yml
+  when: ansible_os_family == 'CentOS'
+
+- include: setup_Debian.yml
+  when: ansible_os_family == 'Debian'
+
+- name: Copy nrpe.cfg into correct directory on target machine
+  copy: src=templates/nrpe.cfg dest={{ nrpe_config }} mode=777 owner=nagios group=nagios
+
+- name: Copy nrpe file for xinetd
+  copy: src=templates/xinted-nrpe dest={{ xinetd_config }} mode=777 owner=root group=root
+
+- name: Add port 5666 into /etc/services
+  blockinfile:
+   dest: /etc/services
+   block: |
+     nrpe 5666/tcp # nrpe
+
+- name: Moving checks into /usr/lib64/nagios/plugins/
+  copy: src=files/check_disk.sh dest={{ check_location }} mode=777 owner=nagios group=nagios
+
+- name: Moving checks into /usr/lib64/nagios/plugins/
+  copy: src=files/check_linux_ram.py dest={{ check_location }} mode=777 owner=nagios group=nagios
+
+  notify: restart_xinetd
+  notify: cleanup

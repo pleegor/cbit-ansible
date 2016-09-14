@@ -1,0 +1,6 @@
+# vars file for nrpe-client
+---
+nrpe-path: /usr/lib64/nagios/plugins
+nrpe_config: /etc/nagios/
+xinetd_config: /etc/xinetd.d/
+check_location: /usr/lib64/nagios/plugins/
