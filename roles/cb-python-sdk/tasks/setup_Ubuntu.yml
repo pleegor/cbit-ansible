@@ -1,0 +1,17 @@
+---
+#setup work for Ubuntu based hosts
+- name: Update apt-get
+  apt: update_cache=yes
+
+- name: Install Couchbase package on Ubuntu
+  apt: update_caches=yes deb=http://packages.couchbase.com/releases/couchbase-release/couchbase-release-1.0-2-amd64.deb
+  when: ansible_os_family == 'Ubuntu'
+
+- name: Download pre-required items for Ubuntu and Debian
+  apt: update_cache=yes
+  apt: name={{item}} state=present
+  with_items:
+   - libcouchbase-dev
+   - build-essential
+   - python-dev
+  when: ansible_os_family == 'Ubuntu'
