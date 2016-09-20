@@ -1,0 +1,6 @@
+---
+# setup for Debian based hosts
+tasks:
+- name: check if ntp is already installed
+  shell: deb -s ntp
+  register: ntp_deb_check

@@ -1,0 +1,17 @@
+---
+# tasks file for ntp-client
+- name: Include OS-specific variables.
+  include_vars: "{{ ansible_os_family }}.yml"
+
+- include: setup_CentOS.yml
+  when: ansible_os_family == 'RedHat'
+
+- include: setup_Debian.yml
+  when: ansible_os_family == 'Ubuntu'
+
+- name: Place ntp.conf file
+  template: src=ntp.conf dest=/etc/ntp.conf
+
+  notify:
+    - restart_ntp
+    - check_ntp

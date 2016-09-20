@@ -1,0 +1,4 @@
+---
+tasks:
+- name: install ntp
+  yum: name=ntp state=present

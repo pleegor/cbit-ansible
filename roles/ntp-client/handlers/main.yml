@@ -1,0 +1,9 @@
+---
+# handlers file for ntp-client
+- name: restart_ntp
+  service: name="{{ ntp_daemon }}" state=restarted enabled=yes
+
+- name: check_ntp
+  shell: ntpq -p
+  #register: ntp_status
+  #print output of ntpq -p
