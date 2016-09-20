@@ -1,6 +1,4 @@
 ---
 # setup for Debian based hosts
-tasks:
-- name: check if ntp is already installed
-  shell: deb -s ntp
-  register: ntp_deb_check
+- name: Update apt cache and install ntp
+  apt: update_cache=yes cache_valid_time=3600 name=ntp state=present
