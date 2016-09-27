@@ -1,0 +1,2 @@
+network_daemon: networking
+eth0_config: /etc/network/networking

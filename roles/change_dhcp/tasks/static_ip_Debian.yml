@@ -1,0 +1,11 @@
+---
+- name: Convert to static IP on Debian based OS
+  blockinfile:
+    dest: /etc/network/interfaces
+    marker: "# This is Ansible managed block. DO NOT CHANGE IT MANUALLY!"
+    block : |
+      iface eth0 inet static
+        address {{ ansible_default_ipv4.address }}
+        gateway {{ ansible_default_ipv4.gateway }}
+        netmask {{ ansible_default_ipv4.netmask }}
+  when: ansible_os_family == 'Debian'

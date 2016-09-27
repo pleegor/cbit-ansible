@@ -1,0 +1,17 @@
+---
+- name: Printing IP output
+  debug: msg=" IP Address {{ ansible_default_ipv4.address }}; Gateway {{ ansible_default_ipv4.gateway }} Subnet {{ ansible_default_ipv4.netmask }}"
+
+- include: static_ip_RedHat.yml
+  when: ansible_os_family == 'RedHat'
+
+- include: static_ip_Debian.yml
+  when: ansible_os_family == 'Debian'
+
+- name: Verify IP conversion
+  command: ip addr show eth0
+  register: net_interface
+
+- name: Print ifconfig output
+  debug: var=net_interface.stdout_lines
+  when: net_interface.stdout is defined

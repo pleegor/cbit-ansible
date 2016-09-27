@@ -1,0 +1,16 @@
+---
+- name: Removing reference to DHCP on RedHat based OS
+  lineinfile: dest=/etc/sysconfig/network-scripts/ifcfg-eth0 state=absent regexp="^BOOTPROTO"
+  when: ansible_os_family == 'RedHat'
+
+- name: Converting to static IP on RedHat based OS
+  lineinfile: dest=/etc/sysconfig/network-scripts/ifcfg-eth0
+    line={{ item.line }}
+    insertafter={{ item.insertafter }}
+  with_items:
+    - { line: "# This is Ansible generated block. DO NOT CHANGE IT MANUALLY!" }
+    - { line: "BOOTPROTO=static", insertafter: "^#TYPE=Ethernet" }
+    - { line: "IPAADR={{ ansible_default_ipv4.address }}", insertafter: "BOOTPROTO=static" }
+    - { line: "GATEWAY={{ ansible_default_ipv4.gateway }}", insertafter: "IPAADR={{ ansible_default_ipv4.address }}" }
+    - { line: "NETMASK={{ ansible_default_ipv4.netmask }}", insertafter: "GATEWAY={{ ansible_default_ipv4.gateway }}" }
+  when: ansible_os_family == 'RedHat'
