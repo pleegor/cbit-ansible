@@ -6,7 +6,7 @@ This role converts DHCP based IPs into static IP
 Requirements
 ------------
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+There are no pre-requirements for this role
 
 Role Variables
 --------------
@@ -29,7 +29,7 @@ Including an example of how to use your role (for instance, with variables passe
 License
 -------
 
-BSD
+Apache License, Version 2.0
 
 Author Information
 ------------------
